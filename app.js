@@ -94,9 +94,9 @@ app.inspectPlayers = function inspectPlayers () {
     .filter(it => it.name === 'player')
     .map(it => ([
       it.tag,
-      [ 'duration', _.get(it, 'player.duration') ],
-      [ 'position', _.get(it, 'player.position') ],
-      [ 'playing', _.get(it, 'player.playing') ? 1 : 0 ]
+      ['duration', _.get(it, 'player.duration')],
+      ['position', _.get(it, 'player.position')],
+      ['playing', _.get(it, 'player.playing') ? 1 : 0]
     ]))
 }
 

@@ -44,7 +44,7 @@ test('should resume on gain if no text given', t => {
   t.plan(2)
 
   var application = t.suite.getApplication()
-  var voice = application.startVoice('player', [ null, '/opt/media/awake_01.wav' ])
+  var voice = application.startVoice('player', [null, '/opt/media/awake_01.wav'])
 
   mock.proxyMethod(voice.player, 'start', {
     before: () => {
@@ -62,7 +62,7 @@ test('should handle player error', t => {
   t.plan(1)
 
   var application = t.suite.getApplication()
-  var voice = application.startVoice('player', [ null, 'http://foo.onion/media.mp3' ])
+  var voice = application.startVoice('player', [null, 'http://foo.onion/media.mp3'])
 
   focusOnce(t, 'gained', voice)
     .then(() => {
@@ -82,7 +82,7 @@ test('should unset player on focus loss to prevent unexpected MediaPlayer not se
   t.plan(1)
 
   var application = t.suite.getApplication()
-  var voice = application.startVoice('player', [ null, '/opt/media/awake_01.wav' ])
+  var voice = application.startVoice('player', [null, '/opt/media/awake_01.wav'])
 
   focusOnce(t, 'gained', voice)
     .then(() => {
@@ -98,7 +98,7 @@ test('should resume on speech-synthesis end if text given and ran sequentially',
   t.plan(1)
 
   var application = t.suite.getApplication()
-  var voice = application.startVoice('player', [ 'foo', '/opt/media/awake_01.wav', /** transient */true, /** sequential */true ])
+  var voice = application.startVoice('player', ['foo', '/opt/media/awake_01.wav', /** transient */true, /** sequential */true])
 
   mock.proxyMethod(voice.player, 'start', {
     before: () => {
@@ -124,7 +124,7 @@ test('should not resume if paused before transient focus loss', t => {
   t.plan(3)
 
   var application = t.suite.getApplication()
-  var voice = application.startVoice('player', [ null, '/opt/media/awake_01.wav' ])
+  var voice = application.startVoice('player', [null, '/opt/media/awake_01.wav'])
   focusOnce(t, 'gained')
     .then(() => {
       voice.pause()
@@ -133,7 +133,7 @@ test('should not resume if paused before transient focus loss', t => {
       mock.mockReturns(voice.player, 'start', () => {
         t.fail('unreachable path')
       })
-      var cut = application.startVoice('player', [ 'foo', null, /** transient */true ])
+      var cut = application.startVoice('player', ['foo', null, /** transient */true])
       return focusOnce(t, 'gained', cut)
     })
     .then(() => {

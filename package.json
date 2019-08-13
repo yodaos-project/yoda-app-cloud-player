@@ -4,5 +4,8 @@
     "hosts": [
       "cloud-player"
     ]
+  },
+  "devDependencies": {
+    "standard": "^13.1.0"
   }
 }

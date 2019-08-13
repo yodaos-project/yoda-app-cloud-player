@@ -14,21 +14,21 @@ module.exports = function TtsStream (pickupOnEnd) {
   focus.onGain = () => {
     var utter = speechSynthesis.playStream()
       .on('start', () => {
-        this.agent.post(TtsStatusChannel, [ StatusCode.start ])
+        this.agent.post(TtsStatusChannel, [StatusCode.start])
       })
       .on('cancel', () => {
         logger.info('on cancel')
-        this.agent.post(TtsStatusChannel, [ StatusCode.cancel ])
+        this.agent.post(TtsStatusChannel, [StatusCode.cancel])
         focus.abandon()
       })
       .on('error', () => {
         logger.info('on error')
-        this.agent.post(TtsStatusChannel, [ StatusCode.error ])
+        this.agent.post(TtsStatusChannel, [StatusCode.error])
         focus.abandon()
       })
       .on('end', () => {
         logger.info('on end')
-        this.agent.post(TtsStatusChannel, [ StatusCode.end ])
+        this.agent.post(TtsStatusChannel, [StatusCode.end])
         var future = Promise.resolve()
         if (pickupOnEnd) {
           future = this.openUrl('yoda-app://launcher/pickup')

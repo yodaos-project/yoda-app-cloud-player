@@ -25,18 +25,18 @@ module.exports = function Player (text, url, transient, sequential, tag) {
       focus.player.prepared = true
     })
     focus.player.on('playing', () => {
-      this.agent.post(MultimediaStatusChannel, [ StatusCode.start, tag ])
+      this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
     })
     focus.player.on('playbackcomplete', () => {
       focus.player.playbackComplete = true
-      this.agent.post(MultimediaStatusChannel, [ StatusCode.end, tag ])
+      this.agent.post(MultimediaStatusChannel, [StatusCode.end, tag])
       if (sequential || !speechSynthesis.speaking) {
         focus.abandon()
       }
     })
     focus.player.on('error', (err) => {
       logger.error('unexpected player error', err.stack)
-      this.agent.post(MultimediaStatusChannel, [ StatusCode.error, tag ])
+      this.agent.post(MultimediaStatusChannel, [StatusCode.error, tag])
       focus.player.stop()
       focus.player = null
       if (sequential || !speechSynthesis.speaking) {
@@ -50,23 +50,23 @@ module.exports = function Player (text, url, transient, sequential, tag) {
       /** on first gain */
       focus.utter = speechSynthesis.speak(text)
         .on('start', () => {
-          this.agent.post(TtsStatusChannel, [ StatusCode.start ])
+          this.agent.post(TtsStatusChannel, [StatusCode.start])
           if (!sequential && focus.player != null) {
             focus.player.start()
           }
         })
         .on('cancel', () => {
           logger.info('on cancel')
-          this.agent.post(TtsStatusChannel, [ StatusCode.cancel ])
+          this.agent.post(TtsStatusChannel, [StatusCode.cancel])
         })
         .on('error', () => {
           logger.info('on error')
-          this.agent.post(TtsStatusChannel, [ StatusCode.error ])
+          this.agent.post(TtsStatusChannel, [StatusCode.error])
           focus.abandon()
         })
         .on('end', () => {
           logger.info('on end')
-          this.agent.post(TtsStatusChannel, [ StatusCode.end ])
+          this.agent.post(TtsStatusChannel, [StatusCode.end])
 
           if (sequential && focus.player) {
             focus.player.start()
@@ -80,7 +80,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     } else if (focus.resumeOnGain && focus.player != null) {
       focus.player.start()
       if (focus.player.prepared) {
-        this.agent.post(MultimediaStatusChannel, [ StatusCode.start, tag ])
+        this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
       }
     }
 
@@ -97,7 +97,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     }
     if (!transient || focus.player == null) {
       if (focus.player && !focus.player.playbackComplete) {
-        this.agent.post(MultimediaStatusChannel, [ StatusCode.cancel, tag ])
+        this.agent.post(MultimediaStatusChannel, [StatusCode.cancel, tag])
       }
       focus.player && focus.player.stop()
       focus.player = null
@@ -109,7 +109,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     }
     focus.resumeOnGain = true
     if (focus.player.playing) {
-      this.agent.post(MultimediaStatusChannel, [ StatusCode.pause, tag ])
+      this.agent.post(MultimediaStatusChannel, [StatusCode.pause, tag])
     }
     focus.player.pause()
   }
@@ -123,7 +123,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     speechSynthesis.cancel()
     if (focus.player) {
       if (focus.player.playing) {
-        this.agent.post(MultimediaStatusChannel, [ StatusCode.pause, tag ])
+        this.agent.post(MultimediaStatusChannel, [StatusCode.pause, tag])
       }
       focus.player.pause()
     } else {
@@ -140,7 +140,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     }
     if (focus.state === AudioFocus.State.ACTIVE) {
       if (!focus.player.playing && focus.player.prepared) {
-        this.agent.post(MultimediaStatusChannel, [ StatusCode.start, tag ])
+        this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
       }
       focus.player.start()
       return
