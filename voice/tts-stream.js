@@ -29,10 +29,16 @@ module.exports = function TtsStream (pickupOnEnd) {
       .on('end', () => {
         logger.info('on end')
         this.agent.post(TtsStatusChannel, [ StatusCode.end ])
-        focus.abandon()
+        var future = Promise.resolve()
         if (pickupOnEnd) {
-          this.openUrl('yoda-app://launcher/pickup')
+          future = this.openUrl('yoda-app://launcher/pickup')
         }
+        future.then(
+          () => focus.abandon(),
+          err => {
+            logger.error('unexpected error on picking up', err.stack)
+            focus.abandon()
+          })
       })
 
     this.agent.declareMethod(GetStreamChannel, (req, res) => {
