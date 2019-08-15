@@ -68,6 +68,7 @@ module.exports = function Player (text, url, transient, sequential, tag) {
           logger.info('on end')
           this.agent.post(TtsStatusChannel, [StatusCode.end])
 
+          focus.resumeOnGain = false
           if (sequential && focus.player) {
             focus.player.start()
             return
@@ -78,13 +79,13 @@ module.exports = function Player (text, url, transient, sequential, tag) {
           focus.abandon()
         })
     } else if (focus.resumeOnGain && focus.player != null) {
+      focus.resumeOnGain = false
       focus.player.start()
       if (focus.player.prepared) {
         this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
       }
     }
 
-    focus.resumeOnGain = false
     nowPlayingCenter.setNowPlayingInfo({/** nothing to be set */})
     nowPlayingCenter.on('command', focus.onRemoteCommand)
   }
