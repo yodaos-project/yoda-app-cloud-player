@@ -1,9 +1,20 @@
 {
   "name": "cloud-player",
+  "files": [
+    "test/**/*",
+    "voice/**/*",
+    "*.js"
+  ],
   "manifest": {
     "hosts": [
       "cloud-player"
     ]
+  },
+  "scripts": {
+    "yodaos:install": "yoda-cli am force-stop cloud-player && yoda-cli pm install .",
+    "yodaos:start": "yoda-cli am launch cloud-player",
+    "yodaos:test": "npm run yodaos:install && yoda-cli am instrument cloud-player 'test/**/*.test.js'",
+    "yodaos:restart": "npm run yodaos:install && npm run yodaos:start"
   },
   "devDependencies": {
     "standard": "^13.1.0"
