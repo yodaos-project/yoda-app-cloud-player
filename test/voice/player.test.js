@@ -151,3 +151,29 @@ test('should not resume if paused before transient focus loss', t => {
       t.end()
     })
 })
+
+test('should resume media on focus regained while speech interrupted', t => {
+  t.plan(3)
+
+  var application = t.suite.getApplication()
+  var voice = application.startVoice('player', ['foo', '/opt/media/awake_01.wav', /** transient */false, /** sequential */true])
+
+  focusOnce(t, 'gained', voice)
+    .then(() => {
+      var cut = application.startVoice('player', ['foo', /** media */undefined, /** transient */true, /** sequential */true])
+      return focusOnce(t, 'gained', cut)
+    })
+    .then(() => {
+      t.strictEqual(voice.resumeOnGain, true, 'be resumable on gained although speech interrupted')
+      mock.proxyMethod(voice.player, 'start', {
+        before: () => {
+          t.pass('player started')
+        }
+      })
+      return focusOnce(t, 'gained', voice)
+    })
+    .then(() => {
+      t.strictEqual(voice.resumeOnGain, false, 'be not resumable on gained after media recovered')
+      t.end()
+    })
+})
