@@ -23,6 +23,7 @@ Queries:
 Queries:
 - `to`: Number. Optional position to be sought to.
 - `by`: Number. Optional delta to be sought by.
+- `hint`: String. Optional hint speech synthesis text. Would be ignored if no current player available.
 
 If both `to` and `by` are specified in query, `by` would be ignored.
 
@@ -30,6 +31,7 @@ If both `to` and `by` are specified in query, `by` would be ignored.
 
 Queries:
 - `speed`: Number.
+- `hint`: String. Optional hint speech synthesis text. Would be ignored if no current player available.
 
 ### yoda-app://cloud-player/stop
 
