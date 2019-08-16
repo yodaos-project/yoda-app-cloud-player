@@ -153,8 +153,12 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     if (focus.player == null) {
       return
     }
+    focus.player.once('seekcomplete', () => {
+      logger.info(`seek completed, resuming player`)
+      focus.resume()
+    })
     focus.player.seekTo(pos)
-    focus.resume()
+    logger.info(`seeking player, waiting complete event`)
   }
   focus.seekBy = (delta) => {
     logger.info(`seeking, player? ${focus.player == null}, by delta ${delta}`)
