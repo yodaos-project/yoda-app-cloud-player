@@ -149,19 +149,23 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     focus.resumeOnGain = true
     focus.request()
   }
-  focus.seekTo = (pos) => {
+  focus.seekTo = (pos, immediateResume) => {
     logger.info(`seeking, player? ${focus.player == null}, to ${pos}`)
     if (focus.player == null) {
       return
     }
     focus.player.once('seekcomplete', () => {
-      logger.info(`seek completed, resuming player`)
-      focus.resume()
+      logger.info('seek completed, resuming player immediately?', immediateResume)
+      if (immediateResume) {
+        focus.resume()
+      } else {
+        focus.resumeOnGain = true
+      }
     })
     focus.player.seekTo(pos)
-    logger.info(`seeking player, waiting complete event`)
+    logger.info('seeking player, waiting complete event')
   }
-  focus.seekBy = (delta) => {
+  focus.seekBy = (delta, immediateResume) => {
     logger.info(`seeking, player? ${focus.player == null}, by delta ${delta}`)
     if (focus.player == null) {
       return
@@ -174,15 +178,23 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     if (pos < 0) {
       pos = 0
     }
-    focus.seekTo(pos)
+    focus.seekTo(pos, immediateResume)
   }
-  focus.setSpeed = (speed) => {
+  focus.setSpeed = (speed, immediateResume) => {
     logger.info(`resuming, player? ${focus.player == null}, speed ${speed}`)
     if (focus.player == null) {
       return
     }
     focus.player.setSpeed(speed)
-    focus.resume()
+    if (immediateResume === true) {
+      focus.resume()
+    } else {
+      /**
+       * FIXME: rplayer would resume player right after seek
+       */
+      focus.pause()
+      focus.resumeOnGain = true
+    }
   }
   focus.onRemoteCommand = (command) => {
     logger.info(`on remote command ${command.type}, url: ${url}, transient: ${transient}`)
