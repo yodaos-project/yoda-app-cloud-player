@@ -18,6 +18,8 @@ var app = Application({
   url: function url (urlObj) {
     logger.info('received url', urlObj.href)
     var voice
+    var immediateResume = true
+    var hint
     switch (urlObj.pathname) {
       case '/play': {
         voice = this.startVoice('player', [
@@ -46,29 +48,40 @@ var app = Application({
       case '/seek': {
         var pos = Number(urlObj.query.to)
         var by = Number(urlObj.query.by)
+        hint = urlObj.query.hint
         voice = this.getVoice('player')
         if (voice == null) {
           break
         }
+        if (hint) {
+          immediateResume = false
+          this.startVoice('player', [hint, undefined, /** transient */ true])
+        }
         if (!isNaN(pos) || pos >= 0) {
-          voice.seekTo(pos)
+          voice.seekTo(pos, immediateResume)
           break
         }
         if (!isNaN(by)) {
-          voice.seekBy(by)
+          voice.seekBy(by, immediateResume)
           break
         }
         break
       }
       case '/set-speed': {
         var speed = Number(urlObj.query.speed)
+        hint = urlObj.query.hint
         if (isNaN(speed) || speed < 0) {
           break
         }
         voice = this.getVoice('player')
-        if (voice) {
-          voice.setSpeed(speed)
+        if (voice == null) {
+          break
         }
+        if (hint) {
+          immediateResume = false
+          this.startVoice('player', [hint, undefined, /** transient */ true])
+        }
+        voice.setSpeed(speed, immediateResume)
         break
       }
       case '/stop': {
