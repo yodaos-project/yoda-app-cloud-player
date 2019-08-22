@@ -3,4 +3,7 @@ curl -L https://github.com/yodaos-project/yoda-platform-tools/releases/download/
 mkdir -p ./yoda-cli-dir && tar xvzf ./yoda-cli.tar.gz -C ./yoda-cli-dir/
 
 pwd
-./yoda-cli-dir/yoda-cli
+./yoda-cli-dir/yoda-cli --help
+
+exit 0
+

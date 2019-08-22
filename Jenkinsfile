@@ -3,11 +3,12 @@ pipeline {
     label "mongoose"
   }
   stages {
-    stage("Build") {
+    stage("Run tests") {
       steps {
         echo "Building.."
         withEnv(["PATH+EXTRA=/usr/sbin:/usr/bin:/sbin:/bin"]) {
           sh "./tools/install-yoda-cli.sh"
+          sh "./tools/unit-test.sh"
         }
       }
     }
