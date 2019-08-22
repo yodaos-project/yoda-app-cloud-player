@@ -1,17 +1,14 @@
 pipeline {
   agent {
-    label 'mongoose'
+    label "mongoose"
   }
   stages {
-    stage('Build') {
+    stage("Build") {
       steps {
-        echo 'Building..'
-        sh './tools/install-yoda-cli.sh'
-      }
-    }
-    stage('Test') {
-      steps {
-        echo 'Testing..'
+        echo "Building.."
+        withEnv(["PATH+EXTRA=/usr/sbin:/usr/bin:/sbin:/bin"]) {
+          sh "./tools/install-yoda-cli.sh"
+        }
       }
     }
   }
