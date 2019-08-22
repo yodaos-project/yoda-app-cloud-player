@@ -27,6 +27,8 @@ MAX_TRIES=10
 
 while [ $SN == "None" ]; do
   SN=`acquire_device`
+  echo "Acquire device returns $SN"
+
   if [ $ACQUIRE_COUNT -gt 0 ]; then
     sleep 1 # just wait for 1s when acquiring device
   fi
