@@ -9,5 +9,6 @@ module.exports.StatusCode = {
   end: 1,
   cancel: 2,
   error: 3,
-  pause: 4
+  pause: 4,
+  resume: 5
 }
