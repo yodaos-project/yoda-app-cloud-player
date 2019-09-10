@@ -25,7 +25,8 @@ module.exports = function Player (text, url, transient, sequential, tag) {
       focus.player.prepared = true
     })
     focus.player.on('playing', () => {
-      this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
+      this.agent.post(MultimediaStatusChannel, [focus.player.startedOnce ? StatusCode.resume : StatusCode.start, tag])
+      focus.player.startedOnce = true
     })
     focus.player.on('playbackcomplete', () => {
       focus.player.playbackComplete = true
@@ -82,7 +83,8 @@ module.exports = function Player (text, url, transient, sequential, tag) {
       focus.resumeOnGain = false
       focus.player.start()
       if (focus.player.prepared) {
-        this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
+        this.agent.post(MultimediaStatusChannel, [focus.player.startedOnce ? StatusCode.resume : StatusCode.start, tag])
+        focus.player.startedOnce = true
       }
     }
 
@@ -141,7 +143,8 @@ module.exports = function Player (text, url, transient, sequential, tag) {
     }
     if (focus.state === AudioFocus.State.ACTIVE) {
       if (!focus.player.playing && focus.player.prepared) {
-        this.agent.post(MultimediaStatusChannel, [StatusCode.start, tag])
+        this.agent.post(MultimediaStatusChannel, [focus.player.startedOnce ? StatusCode.resume : StatusCode.start, tag])
+        focus.player.startedOnce = true
       }
       focus.player.start()
       return

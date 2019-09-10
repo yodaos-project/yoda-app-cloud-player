@@ -82,3 +82,4 @@ Enum of following numbers:
 - `2`: Player cancelled
 - `3`: Player error
 - `4`: Player paused
+- `5`: Player resumed
