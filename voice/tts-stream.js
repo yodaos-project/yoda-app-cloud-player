@@ -9,10 +9,10 @@ var GetStreamChannel = constant.GetStreamChannel
 var TtsStatusChannel = constant.TtsStatusChannel
 var StatusCode = constant.StatusCode
 
-module.exports = function TtsStream (pickupOnEnd) {
+module.exports = function TtsStream (pickupOnEnd, pickupDuration, hint) {
   var focus = new AudioFocus(AudioFocus.Type.TRANSIENT)
   focus.onGain = () => {
-    var utter = speechSynthesis.playStream()
+    var utter = speechSynthesis.playStream(hint)
       .on('start', () => {
         this.agent.post(TtsStatusChannel, [StatusCode.start])
       })

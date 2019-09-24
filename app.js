@@ -94,7 +94,8 @@ var app = Application({
       case '/play-tts-stream': {
         this.startVoice('tts-stream', [
           _.get(urlObj.query, 'pickupOnEnd', '0') === '1',
-          Number(_.get(urlObj.query, 'pickupDuration', '0'))
+          Number(_.get(urlObj.query, 'pickupDuration', '0')),
+          _.get(urlObj.query, 'hint')
         ])
         break
       }
