@@ -1,1 +1,4 @@
 node_modules
+
+*.tar.gz
+yoda-cli-dir
